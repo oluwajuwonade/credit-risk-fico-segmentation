@@ -1,3 +1,10 @@
+<!-- PORTFOLIO-CONTEXT
+Oluwajuwon Adediji | Data & Quantitative Analyst | Decision Intelligence | AI-Powered Analytics
+Portfolio: https://oluwajuwonade.github.io
+-->
+
+> **Portfolio case study:** Quantitative risk analytics demonstrating PD modelling, risk segmentation, and reproducible analytical reasoning.
+
 # Credit Risk Segmentation: PD Modelling + FICO Rating Buckets
 
 A from-scratch implementation of two core retail-credit-risk techniques:
