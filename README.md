@@ -1,103 +1,99 @@
 <!-- PORTFOLIO-CONTEXT
-Oluwajuwon Adediji | Data & Quantitative Analyst | Decision Intelligence | AI-Powered Analytics
+Oluwajuwon Adediji | Data & Quantitative Analyst | Quantitative Risk Analytics
 Portfolio: https://oluwajuwonade.github.io
 -->
 
-> **Portfolio case study:** Quantitative risk analytics demonstrating PD modelling, risk segmentation, and reproducible analytical reasoning.
+# Credit Risk Analytics & FICO Segmentation
 
-# Credit Risk Segmentation: PD Modelling + FICO Rating Buckets
+> **Decision problem:** How can borrower-level risk be modelled and converted into interpretable credit-risk segments?
 
-A from-scratch implementation of two core retail-credit-risk techniques:
+A reproducible quantitative-risk project demonstrating probability-of-default modelling and dynamic FICO score bucketing.
 
-1. **Probability of default (PD) modelling** — logistic regression on
-   borrower-level features.
-2. **FICO score bucketing via dynamic programming** — collapsing a
-   continuous FICO distribution into a small number of statistically
-   distinct rating buckets by maximizing log-likelihood, rather than
-   naive equal-width or equal-frequency binning.
+## Executive summary
 
-The methodology mirrors the approach used in JPMorgan Chase's *Quantitative
-Research* virtual simulation on Forage. **The data and code here are
-independent work** — see the disclosure below.
+The project implements two core retail-credit-risk techniques:
 
-## Results at a glance
+1. **Probability of default (PD) modelling** using logistic regression.
+2. **FICO score segmentation** using dynamic programming to identify statistically distinct rating buckets.
 
-| Metric | Value |
-|---|---|
+The repository reports results on a fully synthetic, seeded borrower dataset and includes implementation code, an executed notebook, outputs, and tests.
+
+## Results on the synthetic dataset
+
+| Metric | Result |
+|---|---:|
 | Portfolio size | 50,000 synthetic borrowers |
 | Overall default rate | 13.3% |
-| PD model (logistic regression) test AUC | 0.70 |
-| FICO rating buckets | 8, log-likelihood optimal |
-| Default rate monotonicity across ratings | ✅ Strictly decreasing (verified) |
+| Test AUC | 0.70 |
+| FICO rating buckets | 8 |
+| Default-rate monotonicity | Strictly decreasing |
 
-![Default rate by FICO rating bucket](outputs/default_rate_by_rating.png)
+These values describe the synthetic data-generating process and are **not claims about any real credit portfolio**.
 
-## Why dynamic-programming bucketing
+## Methodology
 
-Splitting a FICO distribution into equal-width or equal-frequency bins
-ignores where default risk actually changes. This project instead treats
-each candidate bucket's defaults as `Binomial(n, p)` and searches — exactly,
-via dynamic programming — for the boundary set that maximizes total
-log-likelihood across all buckets, subject to a minimum bucket size that
-prevents the optimizer from carving out tiny, noise-driven buckets in
-sparse regions of the score range. See [`src/fico_bucketing.py`](src/fico_bucketing.py)
-for the implementation and [`tests/test_fico_bucketing.py`](tests/test_fico_bucketing.py)
-for correctness checks.
+`Synthetic borrower data → Feature inspection → Train/test split → Logistic PD model → Model evaluation → Dynamic FICO bucketing → Rating validation → Risk interpretation`
+
+### PD modelling
+
+A logistic-regression model estimates borrower-level probability of default from FICO score, debt-to-income, credit lines, and employment tenure.
+
+### FICO bucketing
+
+Instead of naive equal-width or equal-frequency bins, candidate FICO boundaries are optimized using dynamic programming. Each candidate bucket is treated as a binomial segment and evaluated through log-likelihood, subject to a minimum bucket size.
+
+## Validation
+
+The repository includes:
+
+- Model performance evaluation
+- Monotonicity verification
+- Reproducible synthetic data generation
+- Unit tests for the bucketing algorithm
+- Explicit methodological limitations
 
 ## Repository structure
 
-```
+```text
 credit-risk-fico-segmentation/
 ├── data/
-│   ├── generate_synthetic_data.py   # reproducible synthetic data generator
-│   └── synthetic_loan_data.csv      # generated output (50,000 rows)
 ├── notebooks/
-│   └── credit_risk_segmentation.ipynb  # full, executed walkthrough
 ├── src/
-│   └── fico_bucketing.py            # DP-based bucketing (reusable module)
 ├── tests/
-│   └── test_fico_bucketing.py       # unit tests
 ├── outputs/
-│   ├── fico_rating_table.csv        # fitted rating boundaries + stats
-│   └── default_rate_by_rating.png
+├── README.md
 └── requirements.txt
 ```
 
-## Reproducing this
+## Reproduce
 
 ```bash
 pip install -r requirements.txt
-python data/generate_synthetic_data.py   # regenerate the dataset (seeded)
+python data/generate_synthetic_data.py
 jupyter notebook notebooks/credit_risk_segmentation.ipynb
-python tests/test_fico_bucketing.py      # run the test suite
+python tests/test_fico_bucketing.py
 ```
 
-## ⚠️ Data disclosure
+## Important limitations
 
-**All data in this repository is synthetically generated** (seeded, fully
-reproducible — see `data/generate_synthetic_data.py`). It is built to mirror
-the *structure* of a typical retail-credit dataset (FICO score, credit
-lines, income, debt, tenure, default outcome) so the methodology can be
-demonstrated and shared publicly. **It is not real data from JPMorgan Chase,
-Forage, or any other institution**, and contains no proprietary or
-confidential information. The underlying default-generating process is a
-logistic function of FICO score, debt-to-income, credit lines, and
-employment tenure — chosen to produce economically sensible relationships,
-not to represent any real portfolio.
+- The PD model uses a small four-feature specification for demonstration.
+- Synthetic-data performance should not be interpreted as production model performance.
+- Rating boundaries should be fit on training data and validated out-of-time in a real deployment.
+- Real credit-risk work would typically add calibration analysis, model comparison, stability monitoring, and governance controls.
 
-## Limitations
+## Portfolio role
 
-- The PD model is a single 4-feature logistic regression; production credit
-  models typically compare several specifications (WOE-binned logistic
-  regression, gradient boosting) and calibrate against a scorecard.
-- Rating boundaries are fit and evaluated on the same generated dataset here
-  for demonstration purposes; on real data, boundaries should be fit on a
-  training window and validated out-of-time before use.
-- An AUC of ~0.70 reflects the amount of signal built into the synthetic
-  data-generating process, not a claim about real-world PD model
-  performance (though it is in a realistic range for application-level
-  features alone).
+**Tier 1 — Flagship Quantitative / Risk Analytics**
 
-## License
+This project demonstrates statistical modelling, risk segmentation, algorithmic reasoning, reproducibility, testing, and quantitative communication.
 
-MIT — see [LICENSE](LICENSE).
+## Related projects
+
+- [Financial Planning & Scenario Modelling](https://github.com/oluwajuwonade/financial-modelling-starter-system)
+- [Data Quality & Analytics Assurance](https://github.com/oluwajuwonade/data-quality-audit-toolkit)
+- [AI Research & Evaluation Framework](https://github.com/oluwajuwonade/ai-research-evaluation-system)
+
+## Author
+
+**Oluwajuwon Adediji**  
+Data & Quantitative Analyst | Quantitative Risk Analytics
