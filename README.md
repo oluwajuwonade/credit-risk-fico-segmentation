@@ -1,6 +1,6 @@
 <!-- PORTFOLIO-CONTEXT
 Oluwajuwon Adediji | Data & Quantitative Analyst | Quantitative Risk Analytics
-Portfolio: https://oluwajuwonade.github.io
+Portfolio: https://oluwajuwonade.vercel.app
 -->
 
 # Credit Risk Analytics & FICO Segmentation
